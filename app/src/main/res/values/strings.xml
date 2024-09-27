@@ -3,4 +3,5 @@
     <string name="title_activity_register_and_login">RegisterAndLogin</string>
     <string name="title_activity_buttom_navigation">ButtomNavigation</string>
     <string name="title_activity_main_screen">MainScreen</string>
+    <string name="title_activity_cart_screen">CartScreen</string>
 </resources>

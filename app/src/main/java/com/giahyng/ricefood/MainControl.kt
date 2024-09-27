@@ -4,7 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
-import com.giahyng.ricefood.ui.theme.Typography
+import com.giahyng.ricefood.Screen.HomeScreen
+import com.giahyng.ricefood.ui.Typography
 
 class MainControl : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,7 +14,8 @@ class MainControl : ComponentActivity() {
             MaterialTheme(
                 typography = Typography
             ) {
-                    AppNavHost()
+//                    AppNavHost()
+                HomeScreen()
             }
         }
     }
