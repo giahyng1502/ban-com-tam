@@ -14,3 +14,6 @@ val gray = Color(0xFFD9D9D9)
 val black = Color(0xFF000000)
 val white = Color(0xFFFFFFFF)
 val descriptionColor = Color(0xFF707070)
+
+val primaryColor2 = Color(0xBFFF2222)
+

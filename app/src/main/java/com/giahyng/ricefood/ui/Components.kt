@@ -248,6 +248,46 @@ fun ButtonWithIcon(
         }
     }
 }
+@Composable
+fun ButtonWithIconRadius(
+    iconResId: Int, // Nhận ID của icon từ drawable
+    value: String,
+    onClick: () -> Unit,
+    cornerRadius: Dp = 100.dp,
+    backgroundColor: Color = primaryColor
+) {
+    Button(
+        modifier = Modifier.height(70.dp), // Đặt chiều cao cho nút
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(backgroundColor), // Đặt màu nền cho nút
+        shape = RoundedCornerShape(cornerRadius), // Đặt góc bo tròn
+        elevation = ButtonDefaults.buttonElevation(defaultElevation = 8.dp, pressedElevation = 8.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center , // Nội dung căn giữa
+        ) {
+            // Biểu tượng bên trái từ drawable
+            Box (Modifier.clip(shape = CircleShape)
+                .background(color = white, shape = CircleShape)
+                .width(55.dp)
+                .height(55.dp),
+                Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(id = iconResId),
+                    contentDescription = null, // Bạn có thể thêm mô tả cho accessibility
+                    modifier = Modifier.size(32.dp) // Đặt kích thước cho icon
+                )
+            }
+            Spacer(modifier = Modifier.width(8.dp)) // Khoảng cách giữa biểu tượng và văn bản
+
+            // Văn bản bên phải
+            Text(text = value, color = white, fontSize = 20.sp)
+        }
+    }
+}
+
 
 @Composable
 fun ImageCorner(
@@ -418,12 +458,13 @@ fun plushAndminus(
     value: String,
     textcolor: Color,
     onClick: () -> Unit,
+    width: Dp = 30.dp,
     modifier: Modifier = Modifier,
     backgroundColor: Color
 ) {
     Box(
         modifier = modifier
-            .size(30.dp) // Kích thước của nút
+            .size(width) // Kích thước của nút
             .background(backgroundColor, shape = CircleShape)
             .border(width = 1.dp, shape = CircleShape, color = primaryColor)// Màu nền và bo góc
             .clickable { onClick() }, // Sự kiện nhấn

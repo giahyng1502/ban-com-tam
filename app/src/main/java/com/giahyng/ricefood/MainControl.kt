@@ -4,7 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
+import com.giahyng.ricefood.Screen.Cart
 import com.giahyng.ricefood.Screen.HomeScreen
+import com.giahyng.ricefood.Screen.cardScreen
+import com.giahyng.ricefood.Screen.productDetail
 import com.giahyng.ricefood.ui.Typography
 
 class MainControl : ComponentActivity() {
@@ -15,8 +18,11 @@ class MainControl : ComponentActivity() {
                 typography = Typography
             ) {
 //                    AppNavHost()
-                HomeScreen()
+//                HomeScreen()
+//                productDetail()
+                Cart()
             }
+
         }
     }
 }
