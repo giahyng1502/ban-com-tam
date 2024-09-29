@@ -8,6 +8,7 @@ import com.giahyng.ricefood.Screen.Cart
 import com.giahyng.ricefood.Screen.FavoriteScreen
 import com.giahyng.ricefood.Screen.HomeScreen
 import com.giahyng.ricefood.Screen.Myprofile
+import com.giahyng.ricefood.Screen.OrderHistory
 import com.giahyng.ricefood.Screen.ProfileDetail
 import com.giahyng.ricefood.Screen.SearchViewScreen
 import com.giahyng.ricefood.Screen.cardScreen
@@ -19,7 +20,7 @@ class MainControl : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
 
-                    AppNavHost()
+//                    AppNavHost()
 //                HomeScreen()
 //                productDetail()
 //                Cart()
@@ -27,6 +28,7 @@ class MainControl : ComponentActivity() {
 //            FavoriteScreen()
 //            Myprofile()
 //            ProfileDetail()
+//            OrderHistory()
         }
     }
 }

@@ -220,8 +220,3 @@ fun productDetail() {
             }
     }
 }
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    productDetail()
-}

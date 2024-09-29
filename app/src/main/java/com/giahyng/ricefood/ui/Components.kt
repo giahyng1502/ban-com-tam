@@ -30,6 +30,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -77,6 +78,7 @@ fun CustomButton(
     text: String,
     backgroundColor: Color = textColorItems,
     textColor: Color = Color.White,
+    padding: Dp = 16.dp,
     cornerRadius: Dp = 12.dp, // Bán kính góc mặc định
     onClick: () -> Unit
 ) {
@@ -84,7 +86,7 @@ fun CustomButton(
         modifier = modifier
             .clickable(onClick = onClick)
             .background(backgroundColor, shape = RoundedCornerShape(cornerRadius))
-            .padding(16.dp)
+            .padding(padding)
             .fillMaxWidth(),Alignment.Center
     ) {
         Text(text = text, color = textColor, fontWeight = FontWeight.Bold, fontSize = 18.sp)
@@ -441,6 +443,104 @@ fun CustomItemFood(product: Product,index: Int) {
          })
 }
 @Composable
+fun historyFood(product: Product) {
+    // custom item food
+    Card(
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(Color.Transparent),
+        modifier = Modifier
+            .fillMaxWidth().padding(vertical = 10.dp)
+            .height(280.dp),
+        content = {
+            customBox (height = 280.dp,content = {
+                Column(Modifier.fillMaxSize()) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
+                            .fillMaxWidth().padding(10.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(id = product.image),
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.width(80.dp).height(80.dp)
+                                .clip(RoundedCornerShape(16.dp))
+                        )
+                        Spacer(modifier = Modifier.width(5.dp))
+                        Column(
+                            modifier = Modifier.padding(vertical = 5.dp, horizontal = 8.dp)
+                                .weight(1f),
+                            horizontalAlignment = Alignment.Start
+                        ) {
+                            Text(text = product.name, fontSize = 20.sp, color = white, maxLines = 1)
+                            Text(
+                                text = "${product.price} VND",
+                                fontSize = 20.sp,
+                                color = textColorItems
+                            )
+                        }
+                        Text(text = "x2", fontSize = 22.sp, color = white)
+
+                    }
+                    HorizontalDivider(Modifier.fillMaxWidth(), color = gray)
+
+                    Row(Modifier.padding(horizontal = 8.dp).fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        Text(
+                            text = "5 sản phẩm ", fontSize = 14.sp, color = gray,
+                            modifier = Modifier.padding(vertical = 10.dp)
+                        )
+                        Row {
+                            Text(
+                                text = "Thành tiền : ", fontSize = 14.sp, color = gray,
+                                modifier = Modifier.padding(vertical = 10.dp)
+                            )
+                            Text(
+                                text = "120K", fontSize = 14.sp, color = textColorItems,
+                                modifier = Modifier.padding(vertical = 10.dp)
+                            )
+                        }
+
+                    }
+                    HorizontalDivider(Modifier.fillMaxWidth(), color = gray)
+                    Text(
+                        text = "Xem thêm sản phẩm", fontSize = 14.sp, color = gray,
+                        modifier = Modifier.padding(vertical = 10.dp)
+                            .align(alignment = Alignment.CenterHorizontally)
+                    )
+                    HorizontalDivider(Modifier.fillMaxWidth(), color = gray)
+
+                    Row(Modifier.padding(horizontal = 8.dp).fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        Text(
+                            text = "Giao hàng thành công", fontSize = 14.sp, color = gray,
+                            modifier = Modifier.padding(vertical = 10.dp)
+                        )
+                        Icon(painter = painterResource(R.drawable.right),
+                            contentDescription = "",
+                            tint = gray,
+                            modifier = Modifier.size(38.dp)
+                        )
+                    }
+                        HorizontalDivider(Modifier.fillMaxWidth(), color = gray)
+                    Row(Modifier.padding(horizontal = 8.dp).weight(1f),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = "Vui lòng đánh giá sản phẩm", fontSize = 14.sp, color = gray,
+                            modifier = Modifier.padding(vertical = 10.dp).weight(1f)
+                        )
+                        Box(modifier = Modifier.weight(0.4f)) {
+                            CustomButton(text = "Đánh giá", padding = 10.dp, cornerRadius = 8.dp, onClick =  {
+
+                            })
+                        }
+
+                    }
+                }
+            })
+        })
+}
+@Composable
 fun CustomItemProfilee(iconResId: Int,title: String, subTitle: String, modifier: Modifier = Modifier,icon2 : Int) {
     // custom item food
     Card(
@@ -514,6 +614,7 @@ fun customBox2(content: @Composable () -> Unit) {
             content()
         }
     }
+
 val product = Product(name = "Cơm rang sườn",
         price = 100000.0, image = R.drawable.comtam,
         rating = 4.9,
@@ -523,8 +624,6 @@ val product = Product(name = "Cơm rang sườn",
 
 @Preview(showBackground = true)
 @Composable
-fun View() {
-    MaterialTheme(
-    ) {
-    }
+fun GreetingPreview() {
+    historyFood(product)
 }
