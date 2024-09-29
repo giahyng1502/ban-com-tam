@@ -42,7 +42,8 @@ import com.giahyng.ricefood.ui.white
 fun TabLoginAndRegister(navController: NavController?) {
     var tabIndex by remember { mutableStateOf(0) }
     val tabs = listOf("Đăng Nhập", "Đăng Ký")
-    Column {
+    Column(Modifier.background(primaryColor)
+    ) {
         Column(
             modifier = Modifier
                 .weight(0.7f)
@@ -152,7 +153,7 @@ fun LoginScreen(navController: NavController?) {
         placeholder = "Mật khẩu"
     )
 
-    CenterContent("Quên mật khẩu ?", primaryColor, onClick = {
+    CenterContent("Quên mật khẩu ?", white, onClick = {
         //Viết hàm onclick khi người dùng quên mật khẩu tại đây
     })
     // nút button login

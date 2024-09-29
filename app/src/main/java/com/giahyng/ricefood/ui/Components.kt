@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,10 +18,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Card
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
@@ -41,7 +46,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
@@ -50,7 +57,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
@@ -66,7 +75,7 @@ import kotlinx.coroutines.yield
 fun CustomButton(
     modifier: Modifier = Modifier,
     text: String,
-    backgroundColor: Color = primaryColor,
+    backgroundColor: Color = textColorItems,
     textColor: Color = Color.White,
     cornerRadius: Dp = 12.dp, // Bán kính góc mặc định
     onClick: () -> Unit
@@ -94,19 +103,21 @@ fun CustomTextField(
     placeholder: String = "",
 ) {
     Column(modifier = modifier.padding(5.dp)) {
-        Text(text = label, style = MaterialTheme.typography.bodySmall)
+        Text(text = label, fontSize = 16.sp, color = white)
         Spacer(modifier = Modifier.height(4.dp))
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
-            placeholder = { Text(placeholder) },
+            placeholder = { Text(text = placeholder, color = hintColor) },
             modifier = modifier
                 .fillMaxWidth()
-                .background(Color.White),
+                .background(itemsColor, shape = RoundedCornerShape(cornerRadius)),
             colors = outlinedTextFieldColors(
-                focusedBorderColor = primaryColor, // Viền màu xanh khi được focus
-                unfocusedBorderColor = gray, // Viền màu xám khi không được focus // Màu nhãn khi được focus
-                cursorColor = primaryColor // Màu của con trỏ nhập liệu
+                focusedBorderColor = textColorItems, // Viền màu xanh khi được focus
+                unfocusedBorderColor = primaryColor, // Viền màu xám khi không được focus // Màu nhãn khi được focus
+                cursorColor = white, // Màu của con trỏ nhập liệu
+                focusedTextColor = white, // Màu của chữ khi không focus
+                unfocusedTextColor = white
             ),
             textStyle = TextStyle(fontSize = 18.sp),
             shape = RoundedCornerShape(cornerRadius) // Góc bo tròn cho TextField
@@ -128,7 +139,7 @@ fun PasswordTextField(
     var isPasswordVisible by remember { mutableStateOf(false) }
 
     Column(modifier = modifier.padding(5.dp)) {
-        Text(text = label, style = MaterialTheme.typography.bodySmall)
+        Text(text = label, fontSize = 16.sp, color = white)
         Spacer(modifier = Modifier.height(4.dp))
 
         OutlinedTextField(
@@ -136,13 +147,15 @@ fun PasswordTextField(
             onValueChange = onValueChange,
             modifier = modifier
                 .fillMaxWidth()
-                .background(Color.White),
+                .background(itemsColor, shape = RoundedCornerShape(cornerRadius)),
             placeholder = { Text(placeholder) },
             isError = isError,
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = primaryColor, // Viền khi focus
-                unfocusedBorderColor = gray, // Viền khi không focus
-                cursorColor = primaryColor // Màu con trỏ
+                focusedBorderColor = textColorItems, // Viền khi focus
+                unfocusedBorderColor = itemsColor, // Viền khi không focus
+                cursorColor = white ,// Màu con trỏ
+                focusedTextColor = white,
+                unfocusedTextColor = white // Màu chữ khi không focus
             ),
             textStyle = TextStyle(fontSize = 18.sp),
             shape = RoundedCornerShape(cornerRadius), // Bo góc
@@ -205,7 +218,8 @@ fun CustomLayoutWithDividers(
         Text(
             text = value,
             modifier = Modifier.padding(horizontal = 8.dp ) ,// Khoảng cách giữa Divider và nội dung
-            fontSize = 18.sp
+            fontSize = 18.sp,
+            color = white
         )
 
         // Divider bên phải
@@ -306,17 +320,17 @@ fun ImageCorner(
 }
 @Composable
 fun ImageCirc(
+    width: Dp = 45.dp,
     painter: Painter,
-    cornerRadius: Dp = 0.dp,
     borderStroke: Dp = 0.dp,
     modifier: Modifier = Modifier
 ) {
     Image(
         painter = painter,
         contentDescription = null,
-        modifier = modifier.width(45.dp)
-            .border(width = borderStroke, color = primaryColor, shape =  RoundedCornerShape(cornerRadius))
-            .clip(RoundedCornerShape(cornerRadius))
+        modifier = modifier.width(width)
+            .border(width = borderStroke, color = primaryColor, shape = CircleShape)
+            .clip(CircleShape)
     )
 }
 
@@ -362,103 +376,12 @@ fun textDescription(text: String, size: TextUnit, maxline : Int,) {
 }
 
 @Composable
-fun CustomItem(product: Product) {
-    // custom item
-    ElevatedCard(
-        elevation = CardDefaults.outlinedCardElevation(1.dp),
-        shape = RoundedCornerShape(16.dp),
-        modifier = Modifier
-            .width(300.dp)
-            .height(330.dp)
-            .padding(5.dp, 0.dp)
-            .background(color = white)
-            .border(1.dp, gray, RoundedCornerShape(16.dp)),
-    )
-    {
-        Column (Modifier.weight(1.2f)){
-            ImageCorner(painter = painterResource(id = product.image),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(
-                        shape = RoundedCornerShape(
-                            16,
-                            16,
-                            0,
-                            0
-                        )
-                    ),
-            )
-        }
-
-        Column (
-            Modifier
-                .weight(1f)
-                .padding(5.dp, 8.dp)){
-            Spacer(modifier = Modifier.height(5.dp))
-            Text(text = product.name, fontSize = 22.sp, color = black, maxLines = 1,fontWeight = FontWeight(700)  )
-            Spacer(modifier = Modifier.height(5.dp))
-            textDescription(text = product.description, maxline = 2,size = 18.sp)
-            Spacer(modifier = Modifier.height(2.dp))
-            Text(text = "${product.price} VND", fontSize = 18.sp, color = primaryColor, maxLines = 1)
-        }
-        Row(modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Absolute.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(text = "${product.rating}",
-                    fontSize = 20.sp,
-                    color = black, fontWeight = FontWeight(700),
-                    modifier = Modifier.padding(10.dp,0.dp,0.dp,0.dp)
-                )
-                Image(painter = painterResource(R.drawable.baseline_star_24),
-                    modifier = Modifier.size(18.dp), contentDescription = null
-                )
-            }
-            Box(
-                modifier = Modifier
-                    .background(color = primaryColor)
-                    .width(40.dp)
-                    .height(40.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(text = "+", fontSize = 25.sp, color = white, fontWeight = FontWeight(700))
-            }
-        }
-    }
-}
-@Composable
-fun customCategory(category: Category) {
-    // custom category
-    ElevatedCard (modifier = Modifier
-        .width(110.dp).padding(8.dp,0.dp)
-        .background(
-            color = white,
-            shape = RoundedCornerShape(100.dp)
-        ), shape = RoundedCornerShape(100.dp),
-
-        elevation = CardDefaults.cardElevation(8.dp)) {
-        Column(Modifier.width(180.dp)
-            .weight(1.3f)
-            .background(color = primaryColor),
-            horizontalAlignment =  Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween,
-        ) {
-            Image(painter = painterResource(id = category.icon), contentDescription = "",
-                modifier = Modifier.width(100.dp).clip(shape = CircleShape),
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-        }
-        Column(Modifier.weight(1f).padding(5.dp).fillMaxWidth(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = "${category.name}", fontSize =16.sp, color = black)
-        }
-    }
-}
-@Composable
 fun plushAndminus(
     value: String,
     textcolor: Color,
     onClick: () -> Unit,
     width: Dp = 30.dp,
+    size: TextUnit = 23.sp,
     modifier: Modifier = Modifier,
     backgroundColor: Color
 ) {
@@ -466,15 +389,142 @@ fun plushAndminus(
         modifier = modifier
             .size(width) // Kích thước của nút
             .background(backgroundColor, shape = CircleShape)
-            .border(width = 1.dp, shape = CircleShape, color = primaryColor)// Màu nền và bo góc
+            .border(width = 1.dp, shape = CircleShape, color = textColorItems)// Màu nền và bo góc
             .clickable { onClick() }, // Sự kiện nhấn
         contentAlignment = Alignment.Center // Căn giữa nội dung bên trong Box
     ) {
         Text(
             text = value,
             color = textcolor,
-            fontSize = 23.sp
+            fontSize =size
         )
     }
 }
 
+@Composable
+fun CustomItemFood(product: Product,index: Int) {
+    // custom item food
+    Card(
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(Color.Transparent),
+        modifier = Modifier
+           .fillMaxWidth().padding(vertical = 10.dp)
+           .height(110.dp),
+        content = {
+            customBox (content = {
+                Row(verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
+                        .fillMaxWidth().fillMaxHeight().padding(10.dp)
+                    ) {
+                    Text(text = "${index + 1}", fontSize = 23.sp, color = white, modifier = Modifier.padding(start = 5.dp)  )
+                    Image(
+                        painter = painterResource(id = product.image),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.width(80.dp).height(80.dp).clip(RoundedCornerShape(16.dp))
+                    )
+                    Spacer(modifier = Modifier.width(5.dp))
+                    Column(
+                        modifier = Modifier.padding(vertical = 5.dp, horizontal = 5.dp),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Text(text = product.name, fontSize = 20.sp, color = white, maxLines = 1)
+                        Text(text = "${product.price} VND", fontSize = 20.sp, color = textColorItems)
+                    }
+                         plushAndminus(value = "+", textcolor = white, onClick = {
+                            // xu ly khi click vao nút -
+                        }, backgroundColor = textColorItems)
+
+                }
+            })
+         })
+}
+@Composable
+fun CustomItemProfilee(iconResId: Int,title: String, subTitle: String, modifier: Modifier = Modifier,icon2 : Int) {
+    // custom item food
+    Card(
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(Color.Transparent),
+        modifier = Modifier
+            .fillMaxWidth().padding(vertical = 10.dp)
+            .height(110.dp),
+        content = {
+            customBox (content = {
+                Row(verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
+                        .fillMaxWidth().fillMaxHeight().padding(10.dp)
+                ) {
+                    Icon(painter = painterResource(iconResId),
+                        contentDescription = "", tint = hintColor,
+                        modifier = Modifier.size(48.dp))
+                    Spacer(modifier = Modifier.width(5.dp))
+                    Column(
+                        modifier = Modifier.padding(vertical = 5.dp, horizontal = 5.dp)
+                            .weight(1f),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Text(text = title, fontSize = 20.sp, color = white, maxLines = 1)
+                        Text(text = subTitle, fontSize = 16.sp, color = gray, maxLines = 1)
+                    }
+                    Icon(painter = painterResource(icon2),
+                        contentDescription = "", tint = hintColor,
+                        modifier = Modifier.size(55.dp))
+
+                }
+            })
+        })
+}
+@Composable
+fun customBox(height: Dp = 110.dp,content: @Composable () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth().height(height)
+            .background(
+                brush = Brush.linearGradient(
+                    colors = listOf(
+                        Color(0xFF262B33), // Màu #262B33
+                        Color(0x00262B33)  // Màu #262B33 với độ trong suốt (alpha = 0)
+                    ),
+                    start = Offset(0f, 0f), // Điểm bắt đầu (góc độ tương đương 158.84deg)
+                    end = Offset(1000f, 3000f) // Điểm kết thúc (góc lệch)
+                ), shape = RoundedCornerShape(23.dp)
+            )
+    ) {
+        content()
+    }
+}
+@Composable
+fun customBox2(content: @Composable () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.linearGradient(
+                    colors = listOf(
+                        Color(0xFF262B33), // Màu #262B33
+                        Color(0x00262B33)  // Màu #262B33 với độ trong suốt (alpha = 0)
+                    ),
+                    start = Offset(0f, 0f), // Điểm bắt đầu (góc độ tương đương 158.84deg)
+                    end = Offset(1000f, 3000f) // Điểm kết thúc (góc lệch)
+                ), shape = RoundedCornerShape(23.dp)
+            )
+    ) {
+            content()
+        }
+    }
+val product = Product(name = "Cơm rang sườn",
+        price = 100000.0, image = R.drawable.comtam,
+        rating = 4.9,
+        description = "Cơm rang sườn với thịt nướng đặc biệt",
+        isFavorite = false,
+        categoryId = "CT1")
+
+@Preview(showBackground = true)
+@Composable
+fun View() {
+    MaterialTheme(
+    ) {
+    }
+}
