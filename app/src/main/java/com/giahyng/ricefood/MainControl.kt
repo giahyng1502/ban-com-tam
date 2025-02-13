@@ -1,34 +1,47 @@
 package com.giahyng.ricefood
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material3.MaterialTheme
-import com.giahyng.ricefood.Screen.Cart
-import com.giahyng.ricefood.Screen.FavoriteScreen
-import com.giahyng.ricefood.Screen.HomeScreen
-import com.giahyng.ricefood.Screen.Myprofile
-import com.giahyng.ricefood.Screen.OrderHistory
-import com.giahyng.ricefood.Screen.ProfileDetail
-import com.giahyng.ricefood.Screen.SearchViewScreen
-import com.giahyng.ricefood.Screen.cardScreen
-import com.giahyng.ricefood.Screen.productDetail
-import com.giahyng.ricefood.ui.Typography
+import androidx.compose.material.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 
 class MainControl : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            App()
+        }
+    }
 
-//                    AppNavHost()
-//                HomeScreen()
-//                productDetail()
-//                Cart()
-//                SearchViewScreen()
-//            FavoriteScreen()
-//            Myprofile()
-//            ProfileDetail()
-//            OrderHistory()
+    @Composable
+    fun App() {
+        val navController = rememberNavController()
+        MainScreen(navController = navController)
+    }
+
+    @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+    @Composable
+    fun MainScreen(navController: NavHostController) {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
+
+        // Chỉ hiển thị BottomNavigationBar trên các màn hình trong BottomNavigation
+        val bottomBarScreens = listOf("home", "favourite", "cart", "profile")
+
+        Scaffold(
+            bottomBar = {
+                if (currentRoute in bottomBarScreens) {
+                    BottomNavigationBar(navController = navController)
+                }
+            }
+        ) {innerPadding ->
+            AppNavHost(navController = navController,innerPadding)
         }
     }
 }

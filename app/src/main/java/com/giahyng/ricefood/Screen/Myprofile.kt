@@ -1,6 +1,5 @@
 package com.giahyng.ricefood.Screen
 
-import android.icu.text.ListFormatter.Width
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,11 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,24 +23,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.giahyng.ricefood.R
 import com.giahyng.ricefood.ui.CustomButton
 import com.giahyng.ricefood.ui.CustomItemProfilee
 import com.giahyng.ricefood.ui.CustomTextField
 import com.giahyng.ricefood.ui.ImageCirc
-import com.giahyng.ricefood.ui.ImageCorner
 import com.giahyng.ricefood.ui.Typography
 import com.giahyng.ricefood.ui.hintColor
-import com.giahyng.ricefood.ui.itemsColor
 import com.giahyng.ricefood.ui.primaryColor
 import com.giahyng.ricefood.ui.white
 
 @Composable
-fun Myprofile() {
+fun Myprofile(navController: NavHostController) {
     var scrollState = rememberScrollState()
     Column(Modifier.fillMaxSize().background(primaryColor).verticalScroll(scrollState)) {
         Box(modifier = Modifier.align(Alignment.CenterHorizontally).padding(vertical = 10.dp)) {

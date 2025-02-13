@@ -1,8 +1,6 @@
 package com.giahyng.ricefood.Screen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,11 +24,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SearchBar
-import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,6 +43,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.giahyng.ricefood.R
 import com.giahyng.ricefood.model.Category
 import com.giahyng.ricefood.model.Product
@@ -57,7 +53,6 @@ import com.giahyng.ricefood.ui.Typography
 import com.giahyng.ricefood.ui.ImageSlider
 import com.giahyng.ricefood.ui.gray
 import com.giahyng.ricefood.ui.hintColor
-import com.giahyng.ricefood.ui.itemsColor
 import com.giahyng.ricefood.ui.primaryColor
 import com.giahyng.ricefood.ui.searchColor
 import com.giahyng.ricefood.ui.textColorItems
@@ -81,7 +76,7 @@ fun MainScreen(navController: NavController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen () {
+fun HomeScreen(navController: NavHostController) {
     val rememberScrollState = rememberScrollState()
     val name = "Hoàng Văn Hưng"// tên người dùng đăng nhập hiện tại
     Column(

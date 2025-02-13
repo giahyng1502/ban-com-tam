@@ -1,13 +1,11 @@
 package com.giahyng.ricefood.Screen
 
 import android.os.Bundle
-import android.widget.RatingBar
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,9 +21,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,23 +30,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.giahyng.ricefood.R
-import com.giahyng.ricefood.ui.ButtonWithIcon
 import com.giahyng.ricefood.ui.ButtonWithIconRadius
 import com.giahyng.ricefood.ui.black
-import com.giahyng.ricefood.ui.customBox
 import com.giahyng.ricefood.ui.customBox2
-import com.giahyng.ricefood.ui.gray
 import com.giahyng.ricefood.ui.hintColor
 import com.giahyng.ricefood.ui.itemsColor
 import com.giahyng.ricefood.ui.plushAndminus
 import com.giahyng.ricefood.ui.primaryColor
-import com.giahyng.ricefood.ui.primaryColor2
 import com.giahyng.ricefood.ui.textColorItems
-import com.giahyng.ricefood.ui.textDescription
 import com.giahyng.ricefood.ui.white
 
 class ProductDetail : ComponentActivity() {
@@ -64,7 +54,7 @@ class ProductDetail : ComponentActivity() {
 }
 
 @Composable
-fun productDetail() {
+fun productDetail(productId: String, navController: NavHostController) {
     var quantity: Int = 1
     Column(Modifier.fillMaxSize().background(color = primaryColor)) {
         Box (){
